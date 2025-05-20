@@ -1,3 +1,4 @@
+```bash
 docker build -t xrdp-root-wine-audio .
 
 ```bash
