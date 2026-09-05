@@ -1,27 +1,32 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN dpkg --add-architecture i386
+RUN dpkg --add-architecture i386 \
+    && apt-get update -o Acquire::Retries=5 \
+    && apt-get install -y --no-install-recommends \
+       xrdp \
+       xfce4 \
+       xfce4-goodies \
+       xorg \
+       dbus-x11 \
+       sudo \
+       curl \
+       wget \
+       nano \
+       net-tools \
+       policykit-1 \
+       pulseaudio \
+       pulseaudio-utils \
+       wine \
+       wine32 \
+       firefox-esr \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt update && apt install -y \
-    xrdp \
-    xfce4 \
-    xfce4-goodies \
-    xorg \
-    dbus-x11 \
-    sudo \
-    curl \
-    wget \
-    nano \
-    net-tools \
-    policykit-1 \
-    pulseaudio \
-    pulseaudio-utils \
-    wine \
-    wine32 \
-    firefox-esr && \
-    apt clean && rm -rf /var/lib/apt/lists/*
+# Set root password
+RUN echo "root:root" | chpasswd
+
 
 # Set root password
 RUN echo "root:root" | chpasswd
